@@ -1,0 +1,2 @@
+http://localhost:5000/fibonacci/10  -> not ready
+curl http://localhost:5000/fibonacci/10  -X POST -d '{}'

@@ -1,1 +1,1 @@
-dotnet publish -o bin\Docker
+dotnet publish -c Release -o bin\Docker

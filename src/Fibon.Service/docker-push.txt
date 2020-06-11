@@ -1,0 +1,2 @@
+docker tag fibon.service mehdihadeli/fibon-service
+docker push mehdihadeli/fibon-service

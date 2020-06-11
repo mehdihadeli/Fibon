@@ -1,0 +1,3 @@
+docker tag fibon.api mehdihadeli/fibon-api 
+docker push mehdihadeli/fibon-api  
+  
