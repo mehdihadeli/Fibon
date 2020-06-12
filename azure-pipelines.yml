@@ -23,9 +23,10 @@ stages:
     - bash: chmod -R a+x scripts
       displayName: before_script
 
-    - bash: echo Branch Name is $Build.SourceBranchName
+    - bash: echo Branch Name is $Branch_Name
+      displayName: Branch Name 
       env:
-        SYSTEM_ACCESSTOKEN: $(Build.SourceBranchName)
+        Branch_Name: $(Build.SourceBranchName)
 
     - bash: ./scripts/dotnet-build.sh
       displayName: run_build_script
