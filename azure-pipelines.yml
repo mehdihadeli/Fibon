@@ -23,7 +23,7 @@ stages:
     - bash: chmod -R a+x scripts
       displayName: before_script
 
-    - bash: echo Branch Name is $Branch_Name
+    - bash: echo Branch Name is $(Build.SourceBranchName)
       displayName: Branch Name 
       env:
         Branch_Name: $(Build.SourceBranchName)
