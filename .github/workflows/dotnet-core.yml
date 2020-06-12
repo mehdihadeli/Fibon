@@ -1,0 +1,29 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.0.0
+    - name: Moving build to artifacts directory
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+       sh ./scripts/dotnet-build.sh
+       sh ./scripts/dotnet-test.sh
+       sh ./scripts/dotnet-publish.sh
+       sh ./scripts/docker-publish-git-action.sh
+       sh ./scripts/after-success.sh
