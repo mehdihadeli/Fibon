@@ -1,17 +1,10 @@
 DOCKER_ENV=''
 DOCKER_TAG=''
-
-case "$(GITHUB_REF##*/)" in
-  "master")
-    DOCKER_ENV=production
-    DOCKER_TAG=latest
-    ;;
-  "develop")
-    DOCKER_ENV=development
-    DOCKER_TAG=dev
-    ;;    
-esac
-
+ 
+ DOCKER_ENV=production
+ DOCKER_TAG=latest
+    
+echo $DOCKER_USERNAME
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 docker build -f ./src/Fibon.Api/Dockerfile.$DOCKER_ENV -t fibon-api:$DOCKER_TAG ./src/Fibon.Api --no-cache
