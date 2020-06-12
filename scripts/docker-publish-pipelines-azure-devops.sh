@@ -1,6 +1,6 @@
 DOCKER_ENV=''
 DOCKER_TAG=''
-
+echo Branch Name is $(Build.SourceBranchName)
 case "$(Build.SourceBranchName)" in
   "master")
     DOCKER_ENV=production
