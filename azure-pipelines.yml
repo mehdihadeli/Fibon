@@ -32,8 +32,6 @@ stages:
     - bash: ./scripts/dotnet-test.sh
       displayName: run_test_script
 
-    - bash: ./scripts/dotnet-publish.sh
-      displayName: run_publish_script
 
     - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
       env:
