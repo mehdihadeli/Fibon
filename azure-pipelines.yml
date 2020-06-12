@@ -20,10 +20,21 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/src/Fibon.Api/Dockerfile'
-        tags: |
-          $(tag)
+    - bash: chmod -R a+x scripts
+      workingDirectory: #
+      displayName: before_script
+
+    - bash: ./scripts/dotnet-build.sh
+      displayName: run_build_script
+
+    - bash: ./scripts/dotnet-test.sh
+      displayName: run_test_script
+
+    - bash: ./scripts/dotnet-publish.sh
+      displayName: run_publish_script
+
+    - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
+      displayName: run_docker-publish-pipelines-azure-devops_script
+
+    - bash: ./scripts/after-success.sh
+      displayName: run_after-success_script
