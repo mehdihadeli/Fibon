@@ -21,7 +21,6 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - bash: chmod -R a+x scripts
-      workingDirectory: #
       displayName: before_script
 
     - bash: ./scripts/dotnet-build.sh
