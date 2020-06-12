@@ -16,13 +16,17 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: 2.0.0
     - name: Moving build to artifacts directory
+      env:
+        DOCKER_USERNAME: mehdihadeli
+        DOCKER_PASSWORD: divergent1988
+        Last_Name: Octocat
       run: |
        sh ./scripts/dotnet-build.sh
        sh ./scripts/dotnet-test.sh
        sh ./scripts/dotnet-publish.sh
-       sh ./scripts/docker-publish-travis.sh
+       sh ./scripts/docker-publish-git-action.sh
        sh ./scripts/after-success.sh
        
        
