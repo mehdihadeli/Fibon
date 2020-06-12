@@ -24,6 +24,8 @@ stages:
       displayName: before_script
 
     - bash: echo Branch Name is $Build.SourceBranchName
+      env:
+        SYSTEM_ACCESSTOKEN: $(Build.SourceBranchName)
 
     - bash: ./scripts/dotnet-build.sh
       displayName: run_build_script
