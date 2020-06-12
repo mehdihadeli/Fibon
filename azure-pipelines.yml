@@ -23,7 +23,7 @@ stages:
     - bash: chmod -R a+x scripts
       displayName: before_script
 
-    - bash: echo Branch Name is $(Build.SourceBranchName)  $(DOCKER_USERNAME) $(DOCKER_PASSWORD) $(DOCKER_ENV) $(DOCKER_TAG)
+    - bash: echo Branch Name is $(Build.SourceBranchName)  docker user :$(DOCKER_USERNAME) docker pass:$(DOCKER_PASSWORD)
       displayName: Branch Name 
 
     - bash: ./scripts/dotnet-build.sh
