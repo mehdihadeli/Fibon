@@ -34,6 +34,7 @@ stages:
 
 
     - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
+      workingDirectory: $(Build.ArtifactStagingDirectory)
       env:
         Build_SourceBranchName: $(Build.SourceBranchName)
         DOCKER_USERNAME: $(DOCKER_USERNAME)
