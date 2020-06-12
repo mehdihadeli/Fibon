@@ -36,6 +36,11 @@ stages:
       displayName: run_publish_script
 
     - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
+      env:
+        Build_SourceBranchName: $(Build.SourceBranchName)
+        DOCKER_USERNAME: $(DOCKER_USERNAME)
+        DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+
       displayName: run_docker-publish-pipelines-azure-devops_script
 
     - bash: ./scripts/after-success.sh
