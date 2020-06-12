@@ -1,10 +1,18 @@
 DOCKER_ENV=''
 DOCKER_TAG=''
- 
- DOCKER_ENV=production
- DOCKER_TAG=latest
+
+echo Branch Name is $Branch_Name
+case "$Branch_Name" in
+  "master")
+    DOCKER_ENV=production
+    DOCKER_TAG=latest
+    ;;
+  "develop")
+    DOCKER_ENV=development
+    DOCKER_TAG=dev
+    ;;    
+esac
     
-echo $DOCKER_USERNAME
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 docker build -f ./src/Fibon.Api/Dockerfile.$DOCKER_ENV -t fibon-api:$DOCKER_TAG ./src/Fibon.Api --no-cache
