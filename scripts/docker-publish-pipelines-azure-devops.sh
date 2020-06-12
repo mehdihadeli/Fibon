@@ -14,7 +14,7 @@ esac
 
 dotnet publish ./src/Fibon.Api -c Release -o ./bin/Docker
 dotnet publish ./src/Fibon.Service -c Release -o ./bin/Docker
-
+ls ./bin/Docker
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 docker build -f ./src/Fibon.Api/Dockerfile.$DOCKER_ENV -t fibon-api:$DOCKER_TAG ./src/Fibon.Api --no-cache
