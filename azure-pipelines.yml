@@ -38,7 +38,6 @@ stages:
         Build_SourceBranchName: $(Build.SourceBranchName)
         DOCKER_USERNAME: $(DOCKER_USERNAME)
         DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-        Build_ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
 
       displayName: run_docker-publish-pipelines-azure-devops_script
 
