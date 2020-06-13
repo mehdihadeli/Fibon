@@ -48,7 +48,7 @@ stages:
         repository: 'fibon-api'
         containerRegistry: 'my-docker-hub'
         command: buildAndPush
-        Dockerfile: ./src/Fibon.Api/Dockerfile/production
+        Dockerfile: src/Fibon.Api/Dockerfile/production
         tags: |
          fibon-api:latest
     - task: Docker@2
