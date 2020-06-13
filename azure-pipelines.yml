@@ -34,6 +34,7 @@ stages:
 
     - bash: ./scripts/dotnet-publish.sh
       displayName: run_dotnet-publish_script
+      workingDirectory: $(Build.SourcesDirectory)
 
     # - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
     #   env:
