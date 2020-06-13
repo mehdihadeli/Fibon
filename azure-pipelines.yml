@@ -46,7 +46,8 @@ stages:
     - task: Docker@2
       displayName: Build and Push Fibon.Api image
       inputs:
-        repository: $(imageName)
+        repository: 'fibon-api'
+        containerRegistry: 'my-docker-hub'
         command: buildAndPush
         Dockerfile: ./src/Fibon.Api/Dockerfile/production
         tags: |
@@ -54,11 +55,12 @@ stages:
     - task: Docker@2
       displayName: Build and Push Fibon.Service image
       inputs:
-        repository: $(imageName)
+        repository: 'fibon-service'
+        containerRegistry: 'my-docker-hub'
         command: buildAndPush
         Dockerfile: ./src/Fibon.Service/Dockerfile/production
         tags: |
           fibon-service:latest
-    
+
     - bash: ./scripts/after-success.sh
       displayName: run_after-success_script
