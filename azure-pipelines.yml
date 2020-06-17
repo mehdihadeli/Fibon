@@ -34,33 +34,33 @@ stages:
 
     - bash: ./scripts/dotnet-publish.sh
       displayName: run_dotnet-publish_script
-      workingDirectory: $(Build.SourcesDirectory)
+      # workingDirectory: $(Build.SourcesDirectory)
 
-    # - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
-    #   env:
-    #     Build_SourceBranchName: $(Build.SourceBranchName)
-    #     DOCKER_USERNAME: $(DOCKER_USERNAME)
-    #     DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-    #   displayName: run_docker-publish-pipelines-azure-devops_script
+    - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
+      env:
+        Build_SourceBranchName: $(Build.SourceBranchName)
+        DOCKER_USERNAME: $(DOCKER_USERNAME)
+        DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+      displayName: run_docker-publish-pipelines-azure-devops_script
 
-    - task: Docker@2
-      displayName: Build and Push Fibon.Api image
-      inputs:
-        repository: 'fibon-api'
-        containerRegistry: 'my-docker-hub'
-        command: buildAndPush
-        Dockerfile: src/Fibon.Api/Dockerfile.production
-        tags: |
-         latest
-    - task: Docker@2
-      displayName: Build and Push Fibon.Service image
-      inputs:
-        repository: 'fibon-service'
-        containerRegistry: 'my-docker-hub'
-        command: buildAndPush
-        Dockerfile: ./src/Fibon.Service/Dockerfile.production
-        tags: |
-          latest
+    # - task: Docker@2
+    #   displayName: Build and Push Fibon.Api image
+    #   inputs:
+    #     repository: 'fibon-api'
+    #     containerRegistry: 'my-docker-hub'
+    #     command: buildAndPush
+    #     Dockerfile: src/Fibon.Api/Dockerfile.production
+    #     tags: |
+    #      latest
+    # - task: Docker@2
+    #   displayName: Build and Push Fibon.Service image
+    #   inputs:
+    #     repository: 'fibon-service'
+    #     containerRegistry: 'my-docker-hub'
+    #     command: buildAndPush
+    #     Dockerfile: ./src/Fibon.Service/Dockerfile.production
+    #     tags: |
+    #       latest
 
     - bash: ./scripts/after-success.sh
       displayName: run_after-success_script
