@@ -14,8 +14,8 @@ esac
 
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-docker build -t fibon-api:$DOCKER_TAG -f ./src/Fibon.Api/Dockerfile.$DOCKER_ENV  ./src/Fibon.Api --no-cache
-docker build -t fibon-service:$DOCKER_TAG -f ./src/Fibon.Service/Dockerfile.$DOCKER_ENV ./src/Fibon.Service --no-cache
+docker build -t fibon-api:$DOCKER_TAG -f ./src/Fibon.Api/Dockerfile ./src/Fibon.Api 
+docker build -t fibon-service:$DOCKER_TAG -f ./src/Fibon.Service/Dockerfile ./src/Fibon.Service 
 
 docker tag fibon-api:$DOCKER_TAG $DOCKER_USERNAME/fibon-api:$DOCKER_TAG
 docker tag fibon-service:$DOCKER_TAG $DOCKER_USERNAME/fibon-service:$DOCKER_TAG
