@@ -1,6 +1,7 @@
 DOCKER_ENV=''
 DOCKER_TAG=''
 
+#!/bin/bash
 echo Branch Name is $Branch_Name
 case "$Branch_Name" in
   "master")
