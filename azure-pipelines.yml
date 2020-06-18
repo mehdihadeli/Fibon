@@ -21,15 +21,6 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
 
-    - task: ShellScript@2
-      inputs:
-
-        scriptPath:
-        #args: '' # Optional
-        #disableAutoCwd: false # Optional
-        #cwd: '' # Optional
-        #failOnStandardError: false
-
     - bash: chmod -R a+x scripts
       displayName: before_script
 
