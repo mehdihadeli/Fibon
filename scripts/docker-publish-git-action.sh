@@ -1,7 +1,8 @@
+#!/bin/bash
+
 DOCKER_ENV=''
 DOCKER_TAG=''
 
-#!/bin/bash
 echo Branch Name is $Branch_Name
 case "$Branch_Name" in
   "master")
@@ -17,10 +18,10 @@ esac
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 docker build -f ./src/Fibon.Api/Dockerfile.$DOCKER_ENV -t fibon-api:$DOCKER_TAG ./src/Fibon.Api --no-cache
-# docker build -f ./src/Fibon.Service/Dockerfile.$DOCKER_ENV -t fibon-service:$DOCKER_TAG ./src/Fibon.Service --no-cache
+docker build -f ./src/Fibon.Service/Dockerfile.$DOCKER_ENV -t fibon-service:$DOCKER_TAG ./src/Fibon.Service --no-cache
 
 docker tag fibon-api:$DOCKER_TAG $DOCKER_USERNAME/fibon-api:$DOCKER_TAG
-# docker tag fibon-service:$DOCKER_TAG $DOCKER_USERNAME/fibon-service:$DOCKER_TAG
+docker tag fibon-service:$DOCKER_TAG $DOCKER_USERNAME/fibon-service:$DOCKER_TAG
 
 docker push $DOCKER_USERNAME/fibon-api:$DOCKER_TAG
-# docker push $DOCKER_USERNAME/fibon-service:$DOCKER_TAG
+docker push $DOCKER_USERNAME/fibon-service:$DOCKER_TAG

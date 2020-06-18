@@ -1,3 +1,5 @@
+#!/bin/bash
+
 DOCKER_ENV=''
 DOCKER_TAG=''
 
