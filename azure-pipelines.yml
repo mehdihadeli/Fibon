@@ -20,6 +20,16 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+
+    - task: ShellScript@2
+      inputs:
+
+        scriptPath:
+        #args: '' # Optional
+        #disableAutoCwd: false # Optional
+        #cwd: '' # Optional
+        #failOnStandardError: false
+
     - bash: chmod -R a+x scripts
       displayName: before_script
 
@@ -32,16 +42,25 @@ stages:
     - bash: ./scripts/dotnet-test.sh
       displayName: run_test_script
 
-    - bash: ./scripts/dotnet-publish.sh
-      displayName: run_dotnet-publish_script
-      # workingDirectory: $(Build.SourcesDirectory)
+    - task: ShellScript@2
+      inputs:
+        scriptPath: './scripts/dotnet-publish.sh'
 
-    - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
-      env:
-        Build_SourceBranchName: $(Build.SourceBranchName)
-        DOCKER_USERNAME: $(DOCKER_USERNAME)
-        DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-      displayName: run_docker-publish-pipelines-azure-devops_script
+    # - bash: ./scripts/dotnet-publish.sh
+    #   displayName: run_dotnet-publish_script
+    #   # workingDirectory: $(Build.SourcesDirectory)
+
+    - task: ShellScript@2
+      inputs:
+        scriptPath: './scripts/docker-publish-pipelines-azure-devops.sh'
+        args: 'Build_SourceBranchName: $(Build.SourceBranchName) DOCKER_USERNAME: $(DOCKER_USERNAME)         DOCKER_PASSWORD: $(DOCKER_PASSWORD)'
+        
+    # - bash: ./scripts/docker-publish-pipelines-azure-devops.sh
+    #   env:
+    #     Build_SourceBranchName: $(Build.SourceBranchName)
+    #     DOCKER_USERNAME: $(DOCKER_USERNAME)
+    #     DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+    #   displayName: run_docker-publish-pipelines-azure-devops_script
 
     # - task: Docker@2
     #   displayName: Build and Push Fibon.Api image
