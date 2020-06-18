@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Fibon.Api.Framework;
 using Fibon.Api.Handlers;
-using Fibon.Messages;
 using Fibon.Messages.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +19,7 @@ namespace Fibon.Api
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -43,37 +39,41 @@ namespace Fibon.Api
             Configuration.GetSection("serilog").Bind(serilogOptions);
             services.AddSingleton<SerilogOptions>(serilogOptions);
             services.AddLogging();
-            services.AddMvc();
+            services.AddControllers();
             services.AddSingleton<IRepository>(_ => new InMemoryRepository());
             ConfigureRabbitMq(services);
             //services.Configure<RabbitMqOptions>(Configuration.GetSection("rabbitmq"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddSerilog();
             var serilogOptions = app.ApplicationServices.GetService<SerilogOptions>();
-            var level = (LogEventLevel)Enum.Parse(typeof(LogEventLevel), serilogOptions.Level, true);
+            var level = (LogEventLevel) Enum.Parse(typeof(LogEventLevel), serilogOptions.Level, true);
             Log.Logger = new LoggerConfiguration()
-               .Enrich.FromLogContext()
-               .MinimumLevel.Is(level)
-               .WriteTo.Elasticsearch(
+                .Enrich.FromLogContext()
+                .MinimumLevel.Is(level)
+                .WriteTo.Elasticsearch(
                     new ElasticsearchSinkOptions(new Uri(serilogOptions.ApiUrl))
                     {
                         MinimumLogEventLevel = level,
                         AutoRegisterTemplate = true,
-                        IndexFormat = string.IsNullOrWhiteSpace(serilogOptions.IndexFormat) ? 
-                            "logstash-{0:yyyy.MM.dd}" : 
-                            serilogOptions.IndexFormat,
-                        ModifyConnectionSettings = x => 
-                            serilogOptions.UseBasicAuth ? 
-                            x.BasicAuthentication(serilogOptions.Username, serilogOptions.Password) : 
-                            x
-                    }) 
-               .CreateLogger();
-               
-            app.UseMvc();
+                        IndexFormat = string.IsNullOrWhiteSpace(serilogOptions.IndexFormat)
+                            ? "logstash-{0:yyyy.MM.dd}"
+                            : serilogOptions.IndexFormat,
+                        ModifyConnectionSettings = x =>
+                            serilogOptions.UseBasicAuth
+                                ? x.BasicAuthentication(serilogOptions.Username, serilogOptions.Password)
+                                : x
+                    })
+                .CreateLogger();
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             ConfigureRabbitMqSubscriptions(app);
         }
 
@@ -82,9 +82,10 @@ namespace Fibon.Api
             IBusClient client = app.ApplicationServices.GetService<IBusClient>();
             var handler = app.ApplicationServices.GetService<IEventHandler<ValueCalculated>>();
             client.SubscribeAsync<ValueCalculated>(msg => handler.HandleAsync(msg),
-                ctx => ctx.UseConsumerConfiguration(cfg => 
+                ctx => ctx.UseConsumerConfiguration(cfg =>
                     cfg.FromDeclaredQueue(q => q.WithName(GetExchangeName<ValueCalculated>()))));
         }
+
         private void ConfigureRabbitMq(IServiceCollection services)
         {
             var options = new RabbitMqOptions();
@@ -93,7 +94,7 @@ namespace Fibon.Api
 
             var client = RawRabbitFactory.CreateSingleton(new RawRabbitOptions
             {
-                ClientConfiguration  = options
+                ClientConfiguration = options
             });
             services.AddSingleton<IBusClient>(_ => client);
             services.AddScoped<IEventHandler<ValueCalculated>, ValueCalculatedHandler>();

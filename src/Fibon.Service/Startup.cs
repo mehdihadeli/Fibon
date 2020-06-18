@@ -43,12 +43,12 @@ namespace Fibon.Service
             Configuration.GetSection("serilog").Bind(serilogOptions);
             services.AddSingleton<SerilogOptions>(serilogOptions);
             services.AddLogging();
-            services.AddMvc();
+            services.AddControllers();
             ConfigureRabbitMq(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment  env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddSerilog();
             var serilogOptions = app.ApplicationServices.GetService<SerilogOptions>();
@@ -70,8 +70,12 @@ namespace Fibon.Service
                             x
                     }) 
                .CreateLogger();
+            app.UseRouting();
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             ConfigureRabbitMqSubscriptions(app);
         }
 

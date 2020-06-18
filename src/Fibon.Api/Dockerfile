@@ -1,4 +1,4 @@
-﻿FROM microsoft/dotnet:2.0.0-runtime
+﻿FROM mcr.microsoft.com/dotnet/core/runtime
 WORKDIR /dotnetapp
 COPY bin/Docker .
 ENV ASPNETCORE_ENVIRONMENT docker
