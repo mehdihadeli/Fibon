@@ -1,7 +1,7 @@
 DOCKER_ENV=''
 DOCKER_TAG=''
 
-case "$TRAVIS_BRANCH" in
+case "$Build_SourceBranchName" in
   "master")
     DOCKER_ENV=production
     DOCKER_TAG=latest
