@@ -37,6 +37,9 @@ jobs:
        sh ./scripts/docker-publish-git-action.sh
        sh ./scripts/after-success.sh
        
+    - name: Publish
+      run: dotnet publish -c Release ${{ github.workspace }}/src/Fibon.Api/Fibon.Api.csproj
+      
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
